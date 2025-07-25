@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Location Link</title>
+</head>
+<body>
+
+<label>
+  <input type="checkbox" id="locationCheck" onchange="shareLiveLocation(this)">
+  Share Live Location
+</label>
+
+<p id="locationText">Location not shared.</p>
+
+<script>
+  let watchId = null;
+
+  function shareLiveLocation(checkbox) {
+    const locationText = document.getElementById("locationText");
+
+    if (checkbox.checked) {
+      if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const mapURL = `https://www.google.com/maps?q=${lat},${lon}`;
+
+            locationText.innerHTML = `
+              <a href="${mapURL}" target="_blank">
+                📍 Live Location: ${lat.toFixed(5)}, ${lon.toFixed(5)}
+              </a>`;
+          },
+          (error) => {
+            locationText.innerText = "Location access denied.";
+            checkbox.checked = false;
+          },
+          { enableHighAccuracy: true }
+        );
+      } else {
+        locationText.innerText = "Geolocation not supported.";
+        checkbox.checked = false;
+      }
+    } else {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+      }
+      locationText.innerText = "Location not shared.";
+    }
+  }
+</script>
+
+</body>
+</html>
