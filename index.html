@@ -101,8 +101,8 @@
         document.getElementById('form').addEventListener('submit', function(event) {
             event.preventDefault();
             btn.value = 'Sending...';
-            const serviceID = 'default_service';
-            const templateID = 'template_2onhlxu';
+            const serviceID = 'service_a65s5ac';
+            const templateID = 'template_sb3ylmr';
             emailjs.sendForm(serviceID, templateID, this)
             .then(() => {
                 btn.value = 'Sended';
@@ -181,6 +181,6 @@
         };
     </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">emailjs.init('jO-2HrmwL_2wkkRAp')</script>
+    <script type="text/javascript">emailjs.init('SBprUkHij8UgGBjgp')</script>
 </body>
 </html>
