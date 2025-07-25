@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        html {
+            font-size: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, #75e1ff, #4294f8);
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .field {
+        margin-bottom: 15px;
+        }
+
+        .field label {
+        display: block;
+        font-size: 22px;
+        color: #333333;
+        }
+
+        .field a {
+            padding: 2px;
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 5px;
+        box-shadow: inset 1px 1px 5px #545454;
+        font-size: 25px;
+        color: #000000;
+        }
+
+        .field a:hover {
+            box-shadow: inset -1px -1px 5px #545454;
+        }
+
+        .field input {
+        display: block;
+        min-width: 250px;
+        line-height: 1.5;
+        font-size: 25px;
+        }
+
+        input[type="submit"] {
+            margin: 10px;
+        display: block;
+        padding: 6px 30px;
+        font-size: 18px;
+        background-color: #4460AA;
+        box-shadow: inset 1px 1px 5px black;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        }
+
+        input[type="submit"]:hover {
+            box-shadow: inset -1px -1px 5px #545454;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="form">
+        <div class="field" id="output1">
+            <label for="name">contact 1</label>
+            <a class="btn1" id="btn1" onclick="getContacts1()">Select Contacts</a>
+        </div>
+        <div class="field" id="output2">
+            <label for="time">contact 2</label>
+            <a class="btn2" id="btn2" onclick="getContacts2()">Select Contacts</a>
+        </div>
+        <div class="field" id="output3">
+            <label for="message">contact 3</label>
+            <a class="btn3" id="btn3" onclick="getContacts3()">Select Contacts</a>
+        </div>
+        <input type="submit" id="button1" value="Send" >
+    </form>
+
+    <script>
+        const btn = document.getElementById('button1');
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            btn.value = 'Sending...';
+            const serviceID = 'default_service';
+            const templateID = 'template_2onhlxu';
+            emailjs.sendForm(serviceID, templateID, this)
+            .then(() => {
+                btn.value = 'Sended';
+                // alert('Sent!');
+                }, (err) => {
+                btn.value = 'Not Send';
+                alert(JSON.stringify(err));
+            });
+        }, { once: true });
+
+        async function getContacts1() {
+            if ('contacts' in navigator && 'ContactsManager' in window) {
+                try {
+                    const props = ['name', 'tel'];
+                    const opts = { multiple: false };
+                    const contacts = await navigator.contacts.select(props, opts);
+                    let outputHtml = '';
+                    contacts.forEach(contact => {
+                        const name = contact.name?.[0] || 'Unnamed';
+                        const phone = contact.tel?.[0] || 'No phone';
+                        outputHtml = `<input type="text" value="${name}:${phone}" name="name" id="name">`;
+                    });
+                    document.getElementById('output1').innerHTML += outputHtml;
+                    document.querySelector(".btn1").style.display = 'none';
+                } catch (err) {
+                    console.error('Contact selection failed:', err);
+                    alert('Contact selection was cancelled or failed.');
+                }
+            } else {
+                alert('Your browser does not support the Contact Picker API.');
+            }
+        };
+        async function getContacts2() {
+            if ('contacts' in navigator && 'ContactsManager' in window) {
+                try {
+                    const props = ['name', 'tel'];
+                    const opts = { multiple: false };
+                    const contacts = await navigator.contacts.select(props, opts);
+                    let outputHtml = '';
+                    contacts.forEach(contact => {
+                        const name = contact.name?.[0] || 'Unnamed';
+                        const phone = contact.tel?.[0] || 'No phone';
+                        outputHtml = `<input type="text" value="${name}:${phone}" name="time" id="time">`;
+                    });
+                    document.getElementById('output2').innerHTML += outputHtml;
+                    document.querySelector(".btn2").style.display = 'none';
+                } catch (err) {
+                    console.error('Contact selection failed:', err);
+                    alert('Contact selection was cancelled or failed.');
+                }
+            } else {
+                alert('Your browser does not support the Contact Picker API.');
+            }
+        };
+        async function getContacts3() {
+            if ('contacts' in navigator && 'ContactsManager' in window) {
+                try {
+                    const props = ['name', 'tel'];
+                    const opts = { multiple: false };
+                    const contacts = await navigator.contacts.select(props, opts);
+                    let outputHtml = '';
+                    contacts.forEach(contact => {
+                        const name = contact.name?.[0] || 'Unnamed';
+                        const phone = contact.tel?.[0] || 'No phone';
+                        outputHtml = `<input type="text" value="${name}:${phone}" name="message" id="message">`;
+                    });
+                    document.getElementById('output3').innerHTML += outputHtml;
+                    document.querySelector(".btn3").style.display = 'none';
+                } catch (err) {
+                    console.error('Contact selection failed:', err);
+                    alert('Contact selection was cancelled or failed.');
+                }
+            } else {
+                alert('Your browser does not support the Contact Picker API.');
+            }
+        };
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">emailjs.init('jO-2HrmwL_2wkkRAp')</script>
+</body>
+</html>
